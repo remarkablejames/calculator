@@ -31,16 +31,19 @@
     <script>
       let output = document.querySelector(".display");
       let temp = "";
+      let num1 = 0,
+        num2 = 0;
       let operators = ["+", "-", "/", "X"];
-      const lists = [];
-      console.log(typeof output.textContent);
+      let lists = [];
       const inputs = document.querySelectorAll(".number");
+
+      // adding event listeners to all number buttons
       inputs.forEach((element) => {
         element.addEventListener("click", (e) => {
           temp += e.target.textContent;
-          output.textContent += temp;
-
-          console.log(temp);
+          console.log("temp: ", temp);
+          output.textContent = temp;
+          // output.textContent += temp;
         });
       });
 
@@ -52,11 +55,19 @@
       });
 
       function makeArray(number, operator) {
-        lists.push(number);
-        lists.push(operator);
-        console.log(lists);
-        output.textContent = lists.join("");
-        temp = "";
+        if (lists.length < 2) {
+          lists.push(number);
+          lists = lists.filter((item) => item !== "");
+          lists.push(operator);
+          console.log(lists);
+          output.textContent = lists.join("");
+          temp = "";
+        }
+        // lists.push(number);
+        // lists.push(operator);
+        // console.log(lists);
+        // output.textContent = lists.join("");
+        // temp = "";
       }
 
       // answer will hold the final answer
@@ -69,9 +80,15 @@
         for (let i = 0; i < lists.length; i++) {
           switch (lists[i + 1]) {
             case "+":
+              lists = lists.filter((item) => item !== "");
+              console.log(lists);
               console.log("here");
               answer = Number(lists[i]) + Number(lists[i + 2]);
-              console.log(answer);
+              lists = [];
+              lists.push(answer);
+              console.log(lists);
+              output.textContent = answer;
+              temp = "";
               return answer;
             case "-":
               answer = Number(lists[i]) - Number(lists[i + 2]);
