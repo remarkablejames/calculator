@@ -5,7 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- your meta data here -->
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap");
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        font-family: "ubuntu", "sans serif";
+      }
       /* your CSS here */
+      .display {
+        height: 38px;
+        margin-top: 10px;
+        background-color: #000;
+        color: #fff;
+        text-align: right;
+        font-size: 30px;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 6px;
+      }
+      .calculator {
+        background-color: #1e1e1e;
+        width: 270px;
+        margin: 25vh auto;
+        padding: 5px;
+        border: 0px;
+        border-radius: 10px;
+      }
+      .number,
+      .operator,
+      #equal,
+      #clear,
+      #mode {
+        background-color: #000;
+        color: #fff;
+        font-weight: bold;
+        font-size: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
+        margin: 8px;
+      }
+      #mode {
+        width: 200px;
+        margin: 0 30px;
+      }
+      #equal,
+      #clear {
+        background-color: #ff0000;
+        color: #fff;
+      }
     </style>
     <title>Very Simple Calculator</title>
   </head>
@@ -23,16 +73,14 @@
         <button class="number">1</button><button class="number">2</button>
         <button class="number">3</button><button class="operator">X</button
         ><br />
-        <button class="number">0</button><button>C</button>
+        <button class="number">0</button><button id="clear">C</button>
         <button id="equal">=</button><button class="operator">+</button><br />
-        <button>dark mode</button>
+        <button id="mode">Light mode</button>
       </div>
     </div>
     <script>
       let output = document.querySelector(".display");
       let temp = "";
-      let num1 = 0,
-        num2 = 0;
       let operators = ["+", "-", "/", "X"];
       let lists = [];
       const inputs = document.querySelectorAll(".number");
@@ -60,14 +108,10 @@
           lists = lists.filter((item) => item !== "");
           lists.push(operator);
           console.log(lists);
-          output.textContent = lists.join("");
+          // output.textContent = lists.join("");<<<<<<<<<<<<<<<<<
+          output.textContent = " ";
           temp = "";
         }
-        // lists.push(number);
-        // lists.push(operator);
-        // console.log(lists);
-        // output.textContent = lists.join("");
-        // temp = "";
       }
 
       // answer will hold the final answer
@@ -80,34 +124,81 @@
         for (let i = 0; i < lists.length; i++) {
           switch (lists[i + 1]) {
             case "+":
-              lists = lists.filter((item) => item !== "");
-              console.log(lists);
-              console.log("here");
               answer = Number(lists[i]) + Number(lists[i + 2]);
               lists = [];
               lists.push(answer);
-              console.log(lists);
               output.textContent = answer;
               temp = "";
               return answer;
             case "-":
               answer = Number(lists[i]) - Number(lists[i + 2]);
-              console.log(answer);
+              lists = [];
+              lists.push(answer);
+              output.textContent = answer;
+              temp = "";
               return answer;
             case "X":
               answer = Number(lists[i]) * Number(lists[i + 2]);
-              console.log(answer);
+              lists = [];
+              lists.push(answer);
+              output.textContent = answer;
+              temp = "";
               return answer;
             case "/":
               answer = Number(lists[i]) / Number(lists[i + 2]);
-              console.log(answer);
+              lists = [];
+              lists.push(answer);
+              output.textContent = answer;
+              temp = "";
               return answer;
           }
           i++;
         }
       }
+
+      const clear = () => {
+        output.textContent = 0;
+        temp = "";
+        lists = [];
+      };
+      // when user clicks on the clear button
+      document.getElementById("clear").addEventListener("click", clear);
       // when user clicks on equal button
       document.getElementById("equal").addEventListener("click", calculator);
+
+      // Change the mode of the calculator
+      const modeButton = document.getElementById("mode");
+      document.getElementById("mode").addEventListener("click", (e) => {
+        if (e.target.textContent === "Dark mode") {
+          document.body.style.backgroundColor = "#000";
+          document.body.style.color = "#fff";
+          [...inputs, ...ops].forEach((element) => {
+            element.style.backgroundColor = "#000";
+            element.style.color = "#fff";
+          });
+          output.style.backgroundColor = "#000";
+          output.style.color = "#fff";
+          document.querySelector(".calculator").style.backgroundColor =
+            "#1e1e1e";
+          modeButton.style.backgroundColor = "#000";
+          modeButton.style.color = "#fff";
+          e.target.textContent = "Light mode";
+        } else {
+          document.body.style.backgroundColor = "#f5f5f5";
+          document.body.style.color = "#000";
+          [...inputs, ...ops].forEach((element) => {
+            element.style.backgroundColor = "#fff";
+            element.style.color = "#000";
+          });
+          output.style.backgroundColor = "#fff";
+          output.style.color = "#000";
+          document.querySelector(".calculator").style.backgroundColor =
+            "#C0C0C0";
+          modeButton.style.backgroundColor = "#C0C0C0";
+          modeButton.style.color = "#000";
+          e.target.textContent = "Dark mode";
+        }
+      });
     </script>
   </body>
 </html>
